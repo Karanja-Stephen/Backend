@@ -4634,7 +4634,7 @@ class MakeSTKPush(Resource):
                 "PartyA": 254708374149,
                 "PartyB": 174379,
                 "PhoneNumber": phone,
-                "CallBackURL": "https://mydomain.com/path",
+                "CallBackURL": "https://deploy-run.onrender.com/offline-payment/confirmation",
                 "AccountReference": "Farm Data Pod",
                 "TransactionDesc": "Payment of X" 
             }
