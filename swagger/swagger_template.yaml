@@ -1,0 +1,3631 @@
+swagger: "2.0"
+info:
+  title: Farm Data Pod
+  description: Agricultural Traceability System
+  version: "1.0.0"
+basePath: /
+schemes:
+  - http
+  - https
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+    description: >-
+      Enter the token with the `Bearer: ` prefix, e.g. "Bearer abcde12345".
+paths:
+  /login:
+    post:
+      tags:
+        - Authentication
+      summary: User login endpoint.
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                description: User's email
+              password:
+                type: string
+                description: User's password
+            required:
+              - email
+              - password
+      responses:
+        200:
+          description: Successfully logged in
+          schema:
+            type: object
+            properties:
+              access_token:
+                type: string
+                description: JWT access token
+              user_id:
+                type: integer
+                description: ID of the logged-in user
+        401:
+          description: Invalid email or password
+        500:
+          description: Internal server error
+
+  /hubregistrations:
+    get:
+      tags:
+        - Hub Registration
+      summary: Get a list of hub registrations
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: List of hub registrations
+          schema:
+            type: object
+            properties:
+              forms:
+                type: array
+                items:
+                  $ref: '#/definitions/HubRegistration'
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+    post:
+      tags:
+        - Hub Registration
+      summary: Hub registration endpoint.
+      security:
+        - Bearer: []
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/HubRegistration"
+      responses:
+        201:
+          description: Hub registration successful
+          schema:
+            $ref: "#/definitions/HubRegistration"
+        500:
+          description: Internal server error
+
+  /hubregistrations/{form_id}:
+    get:
+      tags:
+        - Hub Registration
+      summary: Get hub registration by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the hub registration form
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Hub registration details by ID
+          schema:
+            $ref: '#/definitions/HubRegistration'
+        401:
+          description: Unauthorized access
+        404:
+          description: Hub registration not found
+        500:
+          description: Internal server error
+    patch:
+      tags:
+        - Hub Registration
+      summary: Update hub registration by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the hub registration form
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/HubRegistration"
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Hub registration updated successfully
+          schema:
+            $ref: "#/definitions/HubRegistration"
+        400:
+          description: Bad request - missing required field
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+    delete:
+      tags:
+        - Hub Registration
+      summary: Delete hub registration by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the hub registration form
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Hub registration deleted successfully
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+  
+  /buyingcenters:
+    get:
+      tags:
+        - Buying Center Registration
+      summary: Get a list of buying center registrations
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: List of buying centers registrations
+          schema:
+            type: object
+            properties:
+              forms:
+                type: array
+                items:
+                  $ref: '#/definitions/AggregationBuyingCenter'
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+    post:
+      tags:
+        - Buying Center Registration
+      summary: Buying Center registration endpoint.
+      security:
+        - Bearer: []
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/AggregationBuyingCenter"
+      responses:
+        201:
+          description: Buying center registration successful
+          schema:
+            $ref: "#/definitions/AggregationBuyingCenter"
+        500:
+          description: Internal server error
+
+  /buyingcenters/{form_id}:
+    get:
+      tags:
+        - Buying Center Registration
+      summary: Get buying center registration by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the buying center registration form
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Buying center registration details by ID
+          schema:
+            $ref: '#/definitions/AggregationBuyingCenter'
+        401:
+          description: Unauthorized access
+        404:
+          description: Buying center registration not found
+        500:
+          description: Internal server error
+    patch:
+      tags:
+        - Buying Center Registration
+      summary: Update buying center registration by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the buying center registration form
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/AggregationBuyingCenter"
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Buying center registration updated successfully
+          schema:
+            $ref: "#/definitions/AggregationBuyingCenter"
+        400:
+          description: Bad request - missing required field
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+    delete:
+      tags:
+        - Buying Center Registration
+      summary: Delete buying center registration by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the buying center registration form
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Buying center registration deleted successfully
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+
+  /cigs:
+    get:
+      tags:
+        - CIG Registration
+      summary: Get a list of cig registrations
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: List of cig registrations
+          schema:
+            type: object
+            properties:
+              forms:
+                type: array
+                items:
+                  $ref: '#/definitions/AggregationCIG'
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+    post:
+      tags:
+        - CIG Registration
+      summary: CIG registration endpoint.
+      security:
+        - Bearer: []
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/AggregationCIG"
+      responses:
+        201:
+          description: CIG registration successful
+          schema:
+            $ref: "#/definitions/AggregationCIG"
+        500:
+          description: Internal server error
+
+  /cigs/{form_id}:
+    get:
+      tags:
+        - CIG Registration
+      summary: Get cig registration by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the cig registration form
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: CIG registration details by ID
+          schema:
+            $ref: '#/definitions/AggregationCIG'
+        401:
+          description: Unauthorized access
+        404:
+          description: CIG registration not found
+        500:
+          description: Internal server error
+    patch:
+      tags:
+        - CIG Registration
+      summary: Update cig registration by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the cig registration form
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/AggregationCIG"
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: CIG registration updated successfully
+          schema:
+            $ref: "#/definitions/AggregationCIG"
+        400:
+          description: Bad request - missing required field
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+    delete:
+      tags:
+        - CIG Registration
+      summary: Delete cig registration by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the cig registration form
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: CIG deleted successfully
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+  # TA Users Registrations
+  /ta-users:
+    get:
+      tags:
+        - TA User Registration
+      summary: Get a list of TA registrations
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: List of TA registrations
+          schema:
+            type: object
+            properties:
+              forms:
+                type: array
+                items:
+                  $ref: '#/definitions/UserTA'
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+    post:
+      tags:
+        - TA User Registration
+      summary: TA registration endpoint.
+      security:
+        - Bearer: []
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/UserTA"
+      responses:
+        201:
+          description: TA registration successful
+          schema:
+            $ref: "#/definitions/UserTA"
+        500:
+          description: Internal server error
+
+  /ta-users/{form_id}:
+    get:
+      tags:
+        - TA User Registration
+      summary: Get TA registration by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the TA registration form
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: TA registration details by ID
+          schema:
+            $ref: '#/definitions/UserTA'
+        401:
+          description: Unauthorized access
+        404:
+          description: TA registration not found
+        500:
+          description: Internal server error
+    patch:
+      tags:
+        - TA User Registration
+      summary: Update TA registration by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the TA registration form
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/UserTA"
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: TA registration updated successfully
+          schema:
+            $ref: "#/definitions/UserTA"
+        400:
+          description: Bad request - missing required field
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+    delete:
+      tags:
+        - TA User Registration
+      summary: Delete TA registration by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the TA registration form
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: TA deleted successfully
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+
+  # Hub Attendant Users Registrations
+  /hub-attendant-users:
+    get:
+      tags:
+        - Hub Attendant User Registration
+      summary: Get a list of Hub Attendant registrations
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: List of Hub Attendant registrations
+          schema:
+            type: object
+            properties:
+              forms:
+                type: array
+                items:
+                  $ref: '#/definitions/HubAttendantUser'
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+    post:
+      tags:
+        - Hub Attendant User Registration
+      summary: Hub Attendant registration endpoint.
+      security:
+        - Bearer: []
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/HubAttendantUser"
+      responses:
+        201:
+          description: Hub Attendant registration successful
+          schema:
+            $ref: "#/definitions/HubAttendantUser"
+        500:
+          description: Internal server error
+
+  /hub-attendant-users/{form_id}:
+    get:
+      tags:
+        - Hub Attendant User Registration
+      summary: Get Hub Attendant registration by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Hub Attendant registration form
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Hub Attendant registration details by ID
+          schema:
+            $ref: '#/definitions/HubAttendantUser'
+        401:
+          description: Unauthorized access
+        404:
+          description: Hub Attendant registration not found
+        500:
+          description: Internal server error
+    patch:
+      tags:
+        - Hub Attendant User Registration
+      summary: Update Hub Attendant registration by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Hub Attendant registration form
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/HubAttendantUser"
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Hub Attendant registration updated successfully
+          schema:
+            $ref: "#/definitions/HubAttendantUser"
+        400:
+          description: Bad request - missing required field
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+    delete:
+      tags:
+        - Hub Attendant User Registration
+      summary: Delete Hub Attendant registration by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Hub Attendant registration form
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Hub Attendant deleted successfully
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+  # Coordinator Users
+  /coordinator-users:
+    get:
+      tags:
+        - Coordinator User Registration
+      summary: Get a list of Coordinator registrations
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: List of Coordinator registrations
+          schema:
+            type: object
+            properties:
+              forms:
+                type: array
+                items:
+                  $ref: '#/definitions/CoordinatorUser'
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+    post:
+      tags:
+        - Coordinator User Registration
+      summary: Coordinator registration endpoint.
+      security:
+        - Bearer: []
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/CoordinatorUser"
+      responses:
+        201:
+          description: Coordinator registration successful
+          schema:
+            $ref: "#/definitions/CoordinatorUser"
+        500:
+          description: Internal server error
+
+  /coordinator-users/{form_id}:
+    get:
+      tags:
+        - Coordinator User Registration
+      summary: Get Coordinator registration by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Coordinator registration form
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Coordinator registration details by ID
+          schema:
+            $ref: '#/definitions/CoordinatorUser'
+        401:
+          description: Unauthorized access
+        404:
+          description: Coordinator registration not found
+        500:
+          description: Internal server error
+    patch:
+      tags:
+        - Coordinator User Registration
+      summary: Update Coordinator registration by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Coordinator registration form
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/CoordinatorUser"
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Coordinator registration updated successfully
+          schema:
+            $ref: "#/definitions/CoordinatorUser"
+        400:
+          description: Bad request - missing required field
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+    delete:
+      tags:
+        - Coordinator User Registration
+      summary: Delete Coordinator registration by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Coordinator registration form
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Coordinator deleted successfully
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+
+  # Buying Agent Users
+  /buying-agent-users:
+    get:
+      tags:
+        - Buying Agent User Registration
+      summary: Get a list of Buying Agent registrations
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: List of Buying Agent registrations
+          schema:
+            type: object
+            properties:
+              forms:
+                type: array
+                items:
+                  $ref: '#/definitions/BuyingAgentUser'
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+    post:
+      tags:
+        - Buying Agent User Registration
+      summary: Buying Agent registration endpoint.
+      security:
+        - Bearer: []
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/BuyingAgentUser"
+      responses:
+        201:
+          description: Buying Agent registration successful
+          schema:
+            $ref: "#/definitions/BuyingAgentUser"
+        500:
+          description: Internal server error
+
+  /buying-agent-users/{form_id}:
+    get:
+      tags:
+        - Buying Agent User Registration
+      summary: Get Buying Agent registration by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Buying Agent registration form
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Buying Agent registration details by ID
+          schema:
+            $ref: '#/definitions/BuyingAgentUser'
+        401:
+          description: Unauthorized access
+        404:
+          description: Buying Agent registration not found
+        500:
+          description: Internal server error
+    patch:
+      tags:
+        - Buying Agent User Registration
+      summary: Update Buying Agent registration by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Buying Agent registration form
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/BuyingAgentUser"
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Buying Agent registration updated successfully
+          schema:
+            $ref: "#/definitions/BuyingAgentUser"
+        400:
+          description: Bad request - missing required field
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+    delete:
+      tags:
+        - Buying Agent User Registration
+      summary: Delete Buying Agent registration by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Buying Agent registration form
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Buying Agent deleted successfully
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+
+  # HQ Users
+  /hq-users:
+    get:
+      tags:
+        - HQ User Registration
+      summary: Get a list of HQ registrations
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: List of HQ registrations
+          schema:
+            type: object
+            properties:
+              forms:
+                type: array
+                items:
+                  $ref: '#/definitions/HQUser'
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+    post:
+      tags:
+        - HQ User Registration
+      summary: HQ registration endpoint.
+      security:
+        - Bearer: []
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/HQUser"
+      responses:
+        201:
+          description: HQ registration successful
+          schema:
+            $ref: "#/definitions/HQUser"
+        500:
+          description: Internal server error
+
+  /hq-users/{form_id}:
+    get:
+      tags:
+        - HQ User Registration
+      summary: Get HQ registration by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the HQ registration form
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: HQ registration details by ID
+          schema:
+            $ref: '#/definitions/HQUser'
+        401:
+          description: Unauthorized access
+        404:
+          description: HQ registration not found
+        500:
+          description: Internal server error
+    patch:
+      tags:
+        - HQ User Registration
+      summary: Update HQ registration by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the HQ registration form
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/HQUser"
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: HQ registration updated successfully
+          schema:
+            $ref: "#/definitions/HQUser"
+        400:
+          description: Bad request - missing required field
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+    delete:
+      tags:
+        - HQ User Registration
+      summary: Delete HQ registration by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the HQ registration form
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: HQ deleted successfully
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+
+  # Processor Users
+  /processor-users:
+    get:
+      tags:
+        - Processor User Registration
+      summary: Get a list of Processor registrations
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: List of Processor registrations
+          schema:
+            type: object
+            properties:
+              forms:
+                type: array
+                items:
+                  $ref: '#/definitions/ProcessorUser'
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+    post:
+      tags:
+        - Processor User Registration
+      summary: Processor registration endpoint.
+      security:
+        - Bearer: []
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/ProcessorUser"
+      responses:
+        201:
+          description: Processor registration successful
+          schema:
+            $ref: "#/definitions/ProcessorUser"
+        500:
+          description: Internal server error
+
+  /processor-users/{form_id}:
+    get:
+      tags:
+        - Processor User Registration
+      summary: Get Processor registration by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Processor registration form
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Processor registration details by ID
+          schema:
+            $ref: '#/definitions/ProcessorUser'
+        401:
+          description: Unauthorized access
+        404:
+          description: Processor registration not found
+        500:
+          description: Internal server error
+    patch:
+      tags:
+        - Processor User Registration
+      summary: Update Processor registration by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Processor registration form
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/ProcessorUser"
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Processor registration updated successfully
+          schema:
+            $ref: "#/definitions/ProcessorUser"
+        400:
+          description: Bad request - missing required field
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+    delete:
+      tags:
+        - Processor User Registration
+      summary: Delete Processor registration by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Processor registration form
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Processor deleted successfully
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+
+  # Individual Logistician Users
+  /individual-logistician-users:
+    get:
+      tags:
+        - Individual Logistician User Registration
+      summary: Get a list of Individual Logistician registrations
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: List of Individual Logistician registrations
+          schema:
+            type: object
+            properties:
+              forms:
+                type: array
+                items:
+                  $ref: '#/definitions/IndividualLogisticianUser'
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+    post:
+      tags:
+        - Individual Logistician User Registration
+      summary: Individual Logistician registration endpoint.
+      security:
+        - Bearer: []
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/IndividualLogisticianUser"
+      responses:
+        201:
+          description: Individual Logistician registration successful
+          schema:
+            $ref: "#/definitions/IndividualLogisticianUser"
+        500:
+          description: Internal server error
+
+  /individual-logistician-users/{form_id}:
+    get:
+      tags:
+        - Individual Logistician User Registration
+      summary: Get Individual Logistician registration by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Individual Logistician registration form
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Individual Logistician registration details by ID
+          schema:
+            $ref: '#/definitions/IndividualLogisticianUser'
+        401:
+          description: Unauthorized access
+        404:
+          description: Individual Logistician registration not found
+        500:
+          description: Internal server error
+    patch:
+      tags:
+        - Individual Logistician User Registration
+      summary: Update Individual Logistician registration by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Individual Logistician registration form
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/IndividualLogisticianUser"
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Individual Logistician registration updated successfully
+          schema:
+            $ref: "#/definitions/IndividualLogisticianUser"
+        400:
+          description: Bad request - missing required field
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+    delete:
+      tags:
+        - Individual Logistician User Registration
+      summary: Delete Individual Logistician registration by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Individual Logistician registration form
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Individual Logistician deleted successfully
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+
+  # Company Logistician Users
+  /company-logistician-users:
+    get:
+      tags:
+        - Company Logistician User Registration
+      summary: Get a list of Company Logistician registrations
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: List of Company Logistician registrations
+          schema:
+            type: object
+            properties:
+              forms:
+                type: array
+                items:
+                  $ref: '#/definitions/CompanyLogisticianUser'
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+    post:
+      tags:
+        - Company Logistician User Registration
+      summary: Company Logistician registration endpoint.
+      security:
+        - Bearer: []
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/CompanyLogisticianUser"
+      responses:
+        201:
+          description: Company Logistician registration successful
+          schema:
+            $ref: "#/definitions/CompanyLogisticianUser"
+        500:
+          description: Internal server error
+
+  /company-logistician-users/{form_id}:
+    get:
+      tags:
+        - Company Logistician User Registration
+      summary: Get Company Logistician registration by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Company Logistician registration form
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Company Logistician registration details by ID
+          schema:
+            $ref: '#/definitions/CompanyLogisticianUser'
+        401:
+          description: Unauthorized access
+        404:
+          description: Company Logistician registration not found
+        500:
+          description: Internal server error
+    patch:
+      tags:
+        - Company Logistician User Registration
+      summary: Update Company Logistician registration by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Company Logistician registration form
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/CompanyLogisticianUser"
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Company Logistician registration updated successfully
+          schema:
+            $ref: "#/definitions/CompanyLogisticianUser"
+        400:
+          description: Bad request - missing required field
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+    delete:
+      tags:
+        - Company Logistician User Registration
+      summary: Delete Company Logistician registration by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Company Logistician registration form
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Company Logistician deleted successfully
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+
+  # Individual Customer Users
+  /individual-customer-users:
+    get:
+      tags:
+        - Individual Customer User Registration
+      summary: Get a list of Individual Customer registrations
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: List of Individual Customer registrations
+          schema:
+            type: object
+            properties:
+              forms:
+                type: array
+                items:
+                  $ref: '#/definitions/IndividualCustomerUser'
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+    post:
+      tags:
+        - Individual Customer User Registration
+      summary: Individual Customer registration endpoint.
+      security:
+        - Bearer: []
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/IndividualCustomerUser"
+      responses:
+        201:
+          description: Individual Customer registration successful
+          schema:
+            $ref: "#/definitions/IndividualCustomerUser"
+        500:
+          description: Internal server error
+
+  /individual-customer-users/{form_id}:
+    get:
+      tags:
+        - Individual Customer User Registration
+      summary: Get Individual Customer registration by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Individual Customer registration form
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Individual Customer registration details by ID
+          schema:
+            $ref: '#/definitions/IndividualCustomerUser'
+        401:
+          description: Unauthorized access
+        404:
+          description: Individual Customer registration not found
+        500:
+          description: Internal server error
+    patch:
+      tags:
+        - Individual Customer User Registration
+      summary: Update Individual Customer registration by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Individual Customer registration form
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/IndividualCustomerUser"
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Individual Customer registration updated successfully
+          schema:
+            $ref: "#/definitions/IndividualCustomerUser"
+        400:
+          description: Bad request - missing required field
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+    delete:
+      tags:
+        - Individual Customer User Registration
+      summary: Delete Individual Customer registration by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Individual Customer registration form
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Individual Customer deleted successfully
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+
+  # Company Customer Users
+  /company-customer-users:
+    get:
+      tags:
+        - Company Customer User Registration
+      summary: Get a list of Company Customer registrations
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: List of Company Customer registrations
+          schema:
+            type: object
+            properties:
+              forms:
+                type: array
+                items:
+                  $ref: '#/definitions/CompanyCustomerUser'
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+    post:
+      tags:
+        - Company Customer User Registration
+      summary: Company Customer registration endpoint.
+      security:
+        - Bearer: []
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/CompanyCustomerUser"
+      responses:
+        201:
+          description: Company Customer registration successful
+          schema:
+            $ref: "#/definitions/CompanyCustomerUser"
+        500:
+          description: Internal server error
+
+  /company-customer-users/{form_id}:
+    get:
+      tags:
+        - Company Customer User Registration
+      summary: Get Company Customer registration by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Company Customer registration form
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Company Customer registration details by ID
+          schema:
+            $ref: '#/definitions/CompanyCustomerUser'
+        401:
+          description: Unauthorized access
+        404:
+          description: Company Customer registration not found
+        500:
+          description: Internal server error
+    patch:
+      tags:
+        - Company Customer User Registration
+      summary: Update Company Customer registration by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Company Customer registration form
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/CompanyCustomerUser"
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: v Customer registration updated successfully
+          schema:
+            $ref: "#/definitions/CompanyCustomerUser"
+        400:
+          description: Bad request - missing required field
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+    delete:
+      tags:
+        - Company Customer User Registration
+      summary: Delete Company Customer registration by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Company Customer registration form
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Company Customer deleted successfully
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+
+  # Producer Biodata
+  /farmers-biodata:
+    get:
+      tags:
+        - Producer Biodata Registration
+      summary: Get a list of Producer Biodata registrations
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: List of Producer Biodata registrations
+          schema:
+            type: object
+            properties:
+              forms:
+                type: array
+                items:
+                  $ref: '#/definitions/FarmerBioData'
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+    post:
+      tags:
+        - Producer Biodata Registration
+      summary: Producer Biodata registration endpoint.
+      security:
+        - Bearer: []
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/FarmerBioData"
+      responses:
+        201:
+          description: Producer Biodata registration successful
+          schema:
+            $ref: "#/definitions/FarmerBioData"
+        500:
+          description: Internal server error
+
+  /farmers-biodata/{form_id}:
+    get:
+      tags:
+        - Producer Biodata Registration
+      summary: Get Producer Biodata registration by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Producer Biodata registration form
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Producer Biodata registration details by ID
+          schema:
+            $ref: '#/definitions/FarmerBioData'
+        401:
+          description: Unauthorized access
+        404:
+          description: Producer Biodata registration not found
+        500:
+          description: Internal server error
+    patch:
+      tags:
+        - Producer Biodata Registration
+      summary: Update Producer Biodata registration by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Producer Biodata registration form
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/FarmerBioData"
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Producer Biodata updated successfully
+          schema:
+            $ref: "#/definitions/FarmerBioData"
+        400:
+          description: Bad request - missing required field
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+    delete:
+      tags:
+        - Producer Biodata Registration
+      summary: Delete Producer Biodata registration by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Producer Biodata registration form
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Producer Biodata deleted successfully
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+
+  # Field Registration
+  /farmers-field-registrations:
+    get:
+      tags:
+        - Field Registration
+      summary: Get a list of Field Registration
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: List of Field Registration
+          schema:
+            type: object
+            properties:
+              forms:
+                type: array
+                items:
+                  $ref: '#/definitions/FarmerFieldRegistration'
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+    post:
+      tags:
+        - Field Registration
+      summary: Field Registration endpoint.
+      security:
+        - Bearer: []
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/FarmerFieldRegistration"
+      responses:
+        201:
+          description: Field Registration successful
+          schema:
+            $ref: "#/definitions/FarmerFieldRegistration"
+        500:
+          description: Internal server error
+
+  /farmers-field-registrations/{form_id}:
+    get:
+      tags:
+        - Field Registration
+      summary: Get Field Registration by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Field Registration form
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Field Registration details by ID
+          schema:
+            $ref: '#/definitions/FarmerFieldRegistration'
+        401:
+          description: Unauthorized access
+        404:
+          description: Field Registration not found
+        500:
+          description: Internal server error
+    patch:
+      tags:
+        - Field Registration
+      summary: Update Field Registration by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Field Registration form
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/FarmerFieldRegistration"
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Field Registration updated successfully
+          schema:
+            $ref: "#/definitions/FarmerFieldRegistration"
+        400:
+          description: Bad request - missing required field
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+    delete:
+      tags:
+        - Field Registration
+      summary: Delete Field Registration by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Field Registration form
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Field deleted successfully
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+
+  # Farmer Allocation
+  /farmerallocations:
+    get:
+      tags:
+        - Farmer Allocation
+      summary: Get a list of Farmer Allocation
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: List of Farmer Allocation
+          schema:
+            type: object
+            properties:
+              forms:
+                type: array
+                items:
+                  $ref: '#/definitions/FarmerAllocationRegistration'
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+    post:
+      tags:
+        - Farmer Allocation
+      summary: Farmer Allocation endpoint.
+      security:
+        - Bearer: []
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/FarmerAllocationRegistration"
+      responses:
+        201:
+          description: Farmer Allocation successful
+          schema:
+            $ref: "#/definitions/FarmerAllocationRegistration"
+        500:
+          description: Internal server error
+
+  /farmerallocations/{form_id}:
+    get:
+      tags:
+        - Farmer Allocation
+      summary: Get Farmer Allocation by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Farmer Allocation form
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Farmer Allocation details by ID
+          schema:
+            $ref: '#/definitions/FarmerAllocationRegistration'
+        401:
+          description: Unauthorized access
+        404:
+          description: Farmer Allocation not found
+        500:
+          description: Internal server error
+    patch:
+      tags:
+        - Farmer Allocation
+      summary: Update Farmer Allocation by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Farmer Allocation form
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/FarmerAllocationRegistration"
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Farmer Allocation updated successfully
+          schema:
+            $ref: "#/definitions/FarmerAllocationRegistration"
+        400:
+          description: Bad request - missing required field
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+    delete:
+      tags:
+        - Farmer Allocation
+      summary: Delete Farmer Allocation by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Farmer Allocation form
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Farmer Allocation deleted successfully
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+
+  # Season Registration
+  /seasons-registration:
+    get:
+      tags:
+        - Season Registration
+      summary: Get a list of Season Registration
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: List of Season Registration
+          schema:
+            type: object
+            properties:
+              forms:
+                type: array
+                items:
+                  $ref: '#/definitions/SeasonRegistration'
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+    post:
+      tags:
+        - Season Registration
+      summary: Season Registration endpoint.
+      security:
+        - Bearer: []
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/SeasonRegistration"
+      responses:
+        201:
+          description: Season Registration successful
+          schema:
+            $ref: "#/definitions/SeasonRegistration"
+        500:
+          description: Internal server error
+
+  /seasons-registration/{form_id}:
+    get:
+      tags:
+        - Season Registration
+      summary: Get Season Registration by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Season Registration form
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Season Registration details by ID
+          schema:
+            $ref: '#/definitions/SeasonRegistration'
+        401:
+          description: Unauthorized access
+        404:
+          description: Season Registration not found
+        500:
+          description: Internal server error
+    patch:
+      tags:
+        - Season Registration
+      summary: Update Season Registration by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Season Registration form
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/SeasonRegistration"
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Season Registration updated successfully
+          schema:
+            $ref: "#/definitions/SeasonRegistration"
+        400:
+          description: Bad request - missing required field
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+    delete:
+      tags:
+        - Season Registration
+      summary: Delete Season by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Season Registration form
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Season Registration deleted successfully
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+
+  # Extension Service
+  /extension-services:
+    get:
+      tags:
+        - Extension Service
+      summary: Get a list of Extension Service
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: List of Extension Service
+          schema:
+            type: object
+            properties:
+              forms:
+                type: array
+                items:
+                  $ref: '#/definitions/SeasonRegistration'
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+    post:
+      tags:
+        - Extension Service
+      summary: Extension Service endpoint.
+      security:
+        - Bearer: []
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/SeasonRegistration"
+      responses:
+        201:
+          description: Extension Service successful
+          schema:
+            $ref: "#/definitions/SeasonRegistration"
+        500:
+          description: Internal server error
+
+  /seasons-registration/{form_id}:
+    get:
+      tags:
+        - Extension Service
+      summary: Get Extension Service by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Extension Service form
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Extension Service details by ID
+          schema:
+            $ref: '#/definitions/ExtensionService'
+        401:
+          description: Unauthorized access
+        404:
+          description: Extension Service not found
+        500:
+          description: Internal server error
+    patch:
+      tags:
+        - Extension Service
+      summary: Update Extension Service by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Extension Service form
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/ExtensionService"
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Extension Service updated successfully
+          schema:
+            $ref: "#/definitions/ExtensionService"
+        400:
+          description: Bad request - missing required field
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+    delete:
+      tags:
+        - Extension Service
+      summary: Delete Season by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Extension Service form
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Extension Service deleted successfully
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+
+  # Trainer Farmer
+  /trainer-farmers:
+    get:
+      tags:
+        - Trainer Farmer
+      summary: Get a list of Trainer Farmer
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: List of Trainer Farmer
+          schema:
+            type: object
+            properties:
+              forms:
+                type: array
+                items:
+                  $ref: '#/definitions/TrainerFarmer'
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+    post:
+      tags:
+        - Trainer Farmer
+      summary: Trainer Farmer endpoint.
+      security:
+        - Bearer: []
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/TrainerFarmer"
+      responses:
+        201:
+          description: Trainer Farmer successful
+          schema:
+            $ref: "#/definitions/TrainerFarmer"
+        500:
+          description: Internal server error
+
+  /trainer-farmers/{form_id}:
+    get:
+      tags:
+        - Trainer Farmer
+      summary: Get Trainer Farmer by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Trainer Farmer form
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Trainer Farmer details by ID
+          schema:
+            $ref: '#/definitions/TrainerFarmer'
+        401:
+          description: Unauthorized access
+        404:
+          description: Trainer Farmer not found
+        500:
+          description: Internal server error
+    patch:
+      tags:
+        - Trainer Farmer
+      summary: Update Trainer Farmer by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Trainer Farmer form
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/TrainerFarmer"
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Trainer Farmer updated successfully
+          schema:
+            $ref: "#/definitions/TrainerFarmer"
+        400:
+          description: Bad request - missing required field
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+    delete:
+      tags:
+        - Trainer Farmer
+      summary: Delete Season by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Trainer Farmer form
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Trainer Farmer deleted successfully
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+
+  # Trainer TA
+  /trainer-farmers:
+    get:
+      tags:
+        - Trainer Farmer
+      summary: Get a list of Trainer Farmer
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: List of Trainer Farmer
+          schema:
+            type: object
+            properties:
+              forms:
+                type: array
+                items:
+                  $ref: '#/definitions/TrainerFarmer'
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+    post:
+      tags:
+        - Trainer Farmer
+      summary: Trainer Farmer endpoint.
+      security:
+        - Bearer: []
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/TrainerFarmer"
+      responses:
+        201:
+          description: Trainer Farmer successful
+          schema:
+            $ref: "#/definitions/TrainerFarmer"
+        500:
+          description: Internal server error
+
+  /trainer-farmers/{form_id}:
+    get:
+      tags:
+        - Trainer Farmer
+      summary: Get Trainer Farmer by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Trainer Farmer form
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Trainer Farmer details by ID
+          schema:
+            $ref: '#/definitions/TrainerFarmer'
+        401:
+          description: Unauthorized access
+        404:
+          description: Trainer Farmer not found
+        500:
+          description: Internal server error
+    patch:
+      tags:
+        - Trainer Farmer
+      summary: Update Trainer Farmer by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Trainer Farmer form
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/TrainerFarmer"
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Trainer Farmer updated successfully
+          schema:
+            $ref: "#/definitions/TrainerFarmer"
+        400:
+          description: Bad request - missing required field
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+    delete:
+      tags:
+        - Trainer Farmer
+      summary: Delete Season by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Trainer Farmer form
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Trainer Farmer deleted successfully
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+
+  # Trainer TA
+  /trainer-tas:
+    get:
+      tags:
+        - Trainer TA
+      summary: Get a list of Trainer TA
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: List of Trainer TA
+          schema:
+            type: object
+            properties:
+              forms:
+                type: array
+                items:
+                  $ref: '#/definitions/TrainerTA'
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+    post:
+      tags:
+        - Trainer TA
+      summary: Trainer TA endpoint.
+      security:
+        - Bearer: []
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/TrainerTA"
+      responses:
+        201:
+          description: Trainer TA successful
+          schema:
+            $ref: "#/definitions/TrainerTA"
+        500:
+          description: Internal server error
+
+  /trainer-tas/{form_id}:
+    get:
+      tags:
+        - Trainer TA
+      summary: Get Trainer TA by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Trainer TA form
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Trainer TA details by ID
+          schema:
+            $ref: '#/definitions/TrainerTA'
+        401:
+          description: Unauthorized access
+        404:
+          description: Trainer TA not found
+        500:
+          description: Internal server error
+    patch:
+      tags:
+        - Trainer TA
+      summary: Update Trainer TA by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Trainer TA form
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/TrainerTA"
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Trainer TA updated successfully
+          schema:
+            $ref: "#/definitions/TrainerTA"
+        400:
+          description: Bad request - missing required field
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+    delete:
+      tags:
+        - Trainer TA
+      summary: Delete Season by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Trainer TA form
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Trainer TA deleted successfully
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+
+  # Trainer Rural Worker
+  /trainer-rural-workers:
+    get:
+      tags:
+        - Trainer Rural Worker
+      summary: Get a list of Trainer Rural Worker
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: List of Trainer Rural Worker
+          schema:
+            type: object
+            properties:
+              forms:
+                type: array
+                items:
+                  $ref: '#/definitions/TrainerRuralWorker'
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+    post:
+      tags:
+        - Trainer Rural Worker
+      summary: Trainer Rural Worker endpoint.
+      security:
+        - Bearer: []
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/TrainerRuralWorker"
+      responses:
+        201:
+          description: Trainer Rural Worker successful
+          schema:
+            $ref: "#/definitions/TrainerRuralWorker"
+        500:
+          description: Internal server error
+
+  /trainer-rural-workers/{form_id}:
+    get:
+      tags:
+        - Trainer Rural Worker
+      summary: Get Trainer Rural Worker by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Trainer Rural Worker form
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Trainer Rural Worker details by ID
+          schema:
+            $ref: '#/definitions/TrainerRuralWorker'
+        401:
+          description: Unauthorized access
+        404:
+          description: Trainer Rural Worker not found
+        500:
+          description: Internal server error
+    patch:
+      tags:
+        - Trainer Rural Worker
+      summary: Update Trainer Rural Worker by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Trainer Rural Worker form
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/TrainerRuralWorker"
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Trainer Rural Worker updated successfully
+          schema:
+            $ref: "#/definitions/TrainerRuralWorker"
+        400:
+          description: Bad request - missing required field
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+    delete:
+      tags:
+        - Trainer Rural Worker
+      summary: Delete Season by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Trainer Rural Worker form
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Trainer Rural Worker deleted successfully
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+  
+  # Trainer HQ Staff
+  /trainer-hq-staffs:
+    get:
+      tags:
+        - Trainer HQ Staff
+      summary: Get a list of Trainer HQ Staff
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: List of Trainer HQ Staff
+          schema:
+            type: object
+            properties:
+              forms:
+                type: array
+                items:
+                  $ref: '#/definitions/TrainerHQStaff'
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+    post:
+      tags:
+        - Trainer HQ Staff
+      summary: Trainer HQ Staff endpoint.
+      security:
+        - Bearer: []
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/TrainerHQStaff"
+      responses:
+        201:
+          description: Trainer HQ Staff successful
+          schema:
+            $ref: "#/definitions/TrainerHQStaff"
+        500:
+          description: Internal server error
+
+  /trainer-hq-staffs/{form_id}:
+    get:
+      tags:
+        - Trainer HQ Staff
+      summary: Get Trainer HQ Staff by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Trainer HQ Staff form
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Trainer HQ Staff details by ID
+          schema:
+            $ref: '#/definitions/TrainerHQStaff'
+        401:
+          description: Unauthorized access
+        404:
+          description: Trainer HQ Staff not found
+        500:
+          description: Internal server error
+    patch:
+      tags:
+        - Trainer HQ Staff
+      summary: Update Trainer HQ Staff by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Trainer HQ Staff form
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/TrainerHQStaff"
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Trainer HQ Staff updated successfully
+          schema:
+            $ref: "#/definitions/TrainerHQStaff"
+        400:
+          description: Bad request - missing required field
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+    delete:
+      tags:
+        - Trainer HQ Staff
+      summary: Delete Season by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Trainer HQ Staff form
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Trainer HQ Staff deleted successfully
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+  
+  # Trainer Buying Agents
+  /trainer-buying-agents:
+    get:
+      tags:
+        - Trainer Buying Agent
+      summary: Get a list of Trainer Buying Agent
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: List of Trainer Buying Agent
+          schema:
+            type: object
+            properties:
+              forms:
+                type: array
+                items:
+                  $ref: '#/definitions/TrainerBuyingAgent'
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+    post:
+      tags:
+        - Trainer Buying Agent
+      summary: Trainer Buying Agent endpoint.
+      security:
+        - Bearer: []
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/TrainerBuyingAgent"
+      responses:
+        201:
+          description: Trainer Buying Agent successful
+          schema:
+            $ref: "#/definitions/TrainerBuyingAgent"
+        500:
+          description: Internal server error
+
+  /trainer-buying-agents/{form_id}:
+    get:
+      tags:
+        - Trainer Buying Agent
+      summary: Get Trainer Buying Agent by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Trainer Buying Agent form
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Trainer Buying Agent details by ID
+          schema:
+            $ref: '#/definitions/TrainerBuyingAgent'
+        401:
+          description: Unauthorized access
+        404:
+          description: Trainer Buying Agent not found
+        500:
+          description: Internal server error
+    patch:
+      tags:
+        - Trainer Buying Agent
+      summary: Update Trainer Buying Agent by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Trainer Buying Agent form
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/TrainerBuyingAgent"
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Trainer Buying Agent updated successfully
+          schema:
+            $ref: "#/definitions/TrainerBuyingAgent"
+        400:
+          description: Bad request - missing required field
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+    delete:
+      tags:
+        - Trainer Buying Agent
+      summary: Delete Season by ID
+      parameters:
+        - name: form_id
+          in: path
+          required: true
+          type: integer
+          description: ID of the Trainer Buying Agent form
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Trainer Buying Agent deleted successfully
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+  
+definitions:
+  LoginRequest:
+    type: object
+    required:
+      - email
+      - password
+    properties:
+      email:
+        type: string
+        description: User's email
+      password:
+        type: string
+        description: User's password
+
+  LoginResponse:
+    type: object
+    properties:
+      access_token:
+        type: string
+        description: JWT access token
+      user_id:
+        type: integer
+        description: ID of the logged-in user
+
+  HubRegistration:
+    type: object
+    properties:
+      region:
+        type: string
+      hub_name:
+        type: string
+      hub_code:
+        type: string
+      address:
+        type: string
+      year_established:
+        type: string
+        format: date
+      ownership:
+        type: string
+      floor_size:
+        type: string
+      facilities:
+        type: string
+      input_center:
+        type: string
+      type_of_building:
+        type: string
+      location:
+        type: string
+      firstname:
+        type: string
+      other_name:
+        type: string
+      id_number:
+        type: integer
+      gender:
+        type: string
+      date_of_birth:
+        type: string
+        format: date
+      email:
+        type: string
+      phone_number:
+        type: integer
+      other_name2:
+        type: string
+      firstname2:
+        type: string
+      id_number2:
+        type: integer
+      gender2:
+        type: string
+      date_of_birth2:
+        type: string
+        format: date
+      email2:
+        type: string
+      phone_number2:
+        type: string
+
+  AggregationBuyingCenter:
+    type: object
+    properties:
+      1:
+        type: string
+        example: When making the patch use this format for the date 2024-02-04 00:00:00
+      region:
+        type: string
+      buyingcenter_name:
+        type: string
+      buyingcenter_code:
+        type: string
+      address:
+        type: string
+      year_established:
+        type: string
+        format: date
+      ownership:
+        type: string
+      floor_size:
+        type: string
+      facilities:
+        type: string
+      input_center:
+        type: string
+      type_of_building:
+        type: string
+      location:
+        type: string
+      firstname:
+        type: string
+      other_name:
+        type: string
+      id_number:
+        type: integer
+      gender:
+        type: string
+      date_of_birth:
+        type: string
+        format: date
+      email:
+        type: string
+      phone_number:
+        type: integer
+      other_name2:
+        type: string
+      firstname2:
+        type: string
+      id_number2:
+        type: integer
+      gender2:
+        type: string
+      date_of_birth2:
+        type: string
+        format: date
+      email2:
+        type: string
+      phone_number2:
+        type: integer
+
+  AggregationCIG:
+    type: object
+    properties:
+      cig_name:
+        type: string
+      date_established:
+        type: string
+        format: date
+      number_of_members:
+        type: string
+      constitution:
+        type: string
+      registration:
+        type: string
+      certificate:
+        type: string
+      elections_held:
+        type: string
+      date_of_last_elections:
+        type: string
+        format: date
+      meeting_venue:
+        type: string
+      frequency:
+        type: string
+      scheduled_meeting_day:
+        type: string
+      scheduled_meeting_time:
+        type: string
+      
+  TAUser:
+    type: object
+    properties:
+      other_name:
+        type: string
+      firstname:
+        type: string
+      ta_code:
+        type: string
+      id_number:
+        type: integer
+      gender:
+        type: string
+      date_of_birth:
+        type: string
+        format: date
+      email:
+        type: string
+      phone_number:
+        type: integer
+      education_level:
+        type: string
+      hub:
+        type: string
+      buying_center:
+        type: string
+      county:
+        type: string
+      sub_county:
+        type: string
+      ward:
+        type: string
+      village:
+        type: string
+
+  HubAttendantUser:
+    type: object
+    properties:
+      other_name:
+        type: string
+      firstname:
+        type: string
+      attendant_code:
+        type: string
+      id_number:
+        type: integer
+      date_of_birth:
+        type: string
+        format: date
+      gender:
+        type: string
+      email:
+        type: string
+      phone_number:
+        type: integer
+      education_level:
+        type: string
+      hub:
+        type: string
+      county:
+        type: string
+      sub_county:
+        type: string
+      ward:
+        type: string
+      village:
+        type: string
+
+  CoordinatorUser:
+    type: object
+    properties:
+      other_name:
+        type: string
+      firstname:
+        type: string
+      coordinator_code:
+        type: string
+      id_number:
+        type: integer
+      date_of_birth:
+        type: string
+        format: date
+      gender:
+        type: string
+      email:
+        type: string
+      phone_number:
+        type: integer
+      education_level:
+        type: string
+      hub:
+        type: string
+      ta:
+        type: string
+      office_location:
+        type: string
+
+  BuyingAgentUser:
+    type: object
+    properties:
+      other_name:
+        type: string
+      firstname:
+        type: string
+      agent_code:
+        type: string
+      id_number:
+        type: integer
+      date_of_birth:
+        type: string
+        format: date
+      gender:
+        type: string
+      email:
+        type: string
+      phone_number:
+        type: integer
+      education_level:
+        type: string
+      hub:
+        type: string
+      buying_center:
+        type: string
+      county:
+        type: string
+      sub_county:
+        type: string
+      ward:
+        type: string
+      village:
+        type: string
+
+  HQUser:
+    type: object
+    properties:
+      other_name:
+        type: string
+      firstname:
+        type: string
+      staff_code:
+        type: string
+      id_number:
+        type: integer
+      date_of_birth:
+        type: string
+        format: date
+      gender:
+        type: string
+      email:
+        type: string
+      phone_number:
+        type: integer
+      education_level:
+        type: string
+      role:
+        type: string
+      reporting_to:
+        type: string
+      related_roles:
+        type: string
+  
+  ProcessorUser:
+    type: object
+    properties:
+      other_name:
+        type: string
+      firstname:
+        type: string
+      processor_code:
+        type: string
+      id_number:
+        type: integer
+      date_of_birth:
+        type: string
+        format: date
+      gender:
+        type: string
+      email:
+        type: string
+      phone_number:
+        type: integer
+      education_level:
+        type: string
+      hub:
+        type: string
+      buying_center:
+        type: string
+      county:
+        type: string
+      sub_county:
+        type: string
+      ward:
+        type: string
+      village:
+        type: string
+
+  IndividualLogisticianUser:
+    type: object
+    properties:
+      other_name:
+        type: string
+      firstname:
+        type: string
+      logistician_code:
+        type: string
+      id_number:
+        type: integer
+      date_of_birth:
+        type: string
+        format: date
+      hub:
+        type: string
+      email:
+        type: string
+      phone_number:
+        type: integer
+      education_level:
+        type: string
+      region:
+        type: string
+
+  CompanyLogisticianUser:
+    type: object
+    properties:
+      name:
+        type: string
+      logistician_code:
+        type: string
+      registration_number:
+        type: integer
+      date_of_registration:
+        type: string
+        format: date
+      hub:
+        type: string
+      email:
+        type: string
+      phone_number:
+        type: integer
+      address:
+        type: string
+      region:
+        type: string
+
+  IndividualCustomerUser:
+    type: object
+    properties:
+      other_name:
+        type: string
+      firstname:
+        type: string
+      customer_code:
+        type: string
+      id_number:
+        type: integer
+      date_of_birth:
+        type: string
+        format: date
+      county:
+        type: string
+      email:
+        type: string
+      phone_number:
+        type: integer
+      sub_county:
+        type: string
+      ward:
+        type: string
+      village:
+        type: string
+
+  CompanyCustomerUser:
+    type: object
+    properties:
+      company_name:
+        type: string
+      other_name1:
+        type: string
+      other_name2:
+        type: string
+      other_name3:
+        type: string
+      firstname1:
+        type: string
+      firstname2:
+        type: string
+      firstname3:
+        type: string
+      gender1:
+        type: string
+      gender2:
+        type: string
+      gender3:
+        type: string
+      customer_code:
+        type: string
+      id_number1:
+        type: integer
+      id_number2:
+        type: integer
+      id_number3:
+        type: integer
+      date_of_birth1:
+        type: string
+        format: date
+      date_of_birth2:
+        type: string
+        format: date
+      date_of_birth3:
+        type: string
+        format: date
+      date_of_registration:
+        type: string
+        format: date
+      county:
+        type: string
+      email1:
+        type: string
+      email2:
+        type: string
+      email3:
+        type: string
+      phone_number:
+        type: integer
+      phone_number1:
+        type: integer
+      phone_number2:
+        type: integer
+      phone_number3:
+        type: integer
+      sub_county:
+        type: string
+      ward:
+        type: string
+      village:
+        type: string
+      sector:
+        type: string
+
+  FarmerBioData:
+    type: object
+    properties:
+      other_name:
+        type: string
+      firstname:
+        type: string
+      date_of_birth:
+        type: string
+        format: date
+      farmer_code:
+        type: string
+      id_number:
+        type: integer
+      email:
+        type: string
+      phone_number:
+        type: integer
+      hub:
+        type: string
+      education_level:
+        type: string
+      county:
+        type: string
+      sub_county:
+        type: string
+      gender:
+        type: string
+      ward:
+        type: string
+      village:
+        type: string
+      total_land_size:
+        type: string
+      cultivate_land_size:
+        type: string
+      homestead_size:
+        type: string
+      uncultivated_land_size:
+        type: string
+      farmer_interest_in_extension:
+        type: string
+      labor:
+        type: string
+      access_to_irrigation:
+        type: string
+      farm_accessibility:
+        type: string
+      crop_list:
+        type: string
+      knowledge_related:
+        type: string
+      soil_related:
+        type: string
+      compost_related:
+        type: string
+      nutrition_related:
+        type: string
+      pests_related:
+        type: string
+      disease_related:
+        type: string
+      quality_related:
+        type: string
+      market_related:
+        type: string
+      food_loss_related:
+        type: string
+      finance_related:
+        type: string
+      weather_related:
+        type: string
+      dairy_cows:
+        type: string
+      bulls:
+        type: string
+      sheep_and_goats:
+        type: string
+      chicken:
+        type: string
+      pigs:
+        type: string
+      rabbits:
+        type: string
+      beehives:
+        type: string
+      donkeys:
+        type: string
+      housing_type:
+        type: string
+      housing_floor:
+        type: string
+      housing_roof:
+        type: string
+      lighting_fuel:
+        type: string
+      cooking_fuel:
+        type: 
+      water_filter:
+        type: string
+      water_tank_greater_than_5000lts:
+        type: string
+      hand_washing_facilities:
+        type: string
+      ppes:
+        type: string
+      water_well_or_weir:
+        type: string
+      irrigation_pump:
+        type: string
+      harvesting_equipment:
+        type: string
+      transportation_type:
+        type: string
+      toilet_floor:
+        type: string
+
+  FarmerFieldRegistration:
+    type: object
+    properties:
+      field_number:
+        type: string
+      field_size:
+        type: string
+      crop1:
+        type: string
+      crop_variety1:
+        type: string
+      date_of_planted1:
+        type: string
+        format: date
+      population1:
+        type: string
+      baseline_yield_last_season1:
+        type: string
+      baseline_income_last_season1:
+        type: string
+      baseline_cost_of_production_last_season1:
+        type: string
+      crop2:
+        type: string
+      crop_variety2:
+        type: string
+      date_of_planted2:
+        type: string
+        format: date
+      population2:
+        type: string
+      baseline_yield_last_season2:
+        type: string
+      baseline_income_last_season2:
+        type: string
+      baseline_cost_of_production_last_season2:
+        type: string
+  
+  FarmerAllocationRegistration:
+      type: object
+      properties:
+        farmer_code:
+          type: string
+        ta_code:
+          type: string
+        buying_center_code:
+          type: string
+        cig:
+          type: string
+        allocation_date:
+          type: string
+          format: date
+       
+  SeasonRegistration:
+      type: object
+      properties:
+        ta_code:
+          type: string
+        farmer_code:
+          type: string
+        select_field:
+          type: string
+        crop:
+          type: string
+        date_of_planting:
+          type: string
+          format: date
+        week_number:
+          type: integer
+        nursery:
+          type: string
+        soil_analysis:
+          type: string
+        liming:
+          type: string
+        transplanting:
+          type: string
+        weeding:
+          type: string
+        thinning:
+          type: string
+        mulching:
+          type: string
+        pruning:
+          type: string
+        harvesting:
+          type: string
+        labor_types:
+          type: string
+        unit_cost_labor:
+          type: string
+
+  ExtensionService:
+      type: object
+      properties:
+        ta_code:
+          type: string
+        farmer_code:
+          type: string
+        select_field:
+          type: string
+        crop:
+          type: string
+        date_of_planting:
+          type: string
+          format: date
+        week_number:
+          type: integer
+        nursery:
+          type: string
+        soil_analysis:
+          type: string
+        liming:
+          type: string
+        transplanting:
+          type: string
+        weeding:
+          type: string
+        thinning:
+          type: string
+        mulching:
+          type: string
+        pruning:
+          type: string
+        harvesting:
+          type: string
+
+  TrainerFarmer:
+      type: object
+      properties:
+        topic:
+          type: string
+        date_of_training:
+          type: string
+          format: date
+        trainer_name:
+          type: string
+        content_of_training:
+          type: string
+        venue:
+          type: string
+        cig:
+          type: string
+        participants:
+          type: string
+
+  TrainerTA:
+      type: object
+      properties:
+        topic:
+          type: string
+        date_of_training:
+          type: string
+          format: date
+        trainer_name:
+          type: string
+        content_of_training:
+          type: string
+        venue:
+          type: string
+        hub:
+          type: string
+        participants:
+          type: string
+
+  TrainerRuralWorker:
+      type: object
+      properties:
+        topic:
+          type: string
+        date_of_training:
+          type: string
+          format: date
+        trainer_name:
+          type: string
+        content_of_training:
+          type: string
+        venue:
+          type: string
+        hub:
+          type: string
+        participants:
+          type: string
+
+  TrainerHQStaff:
+      type: object
+      properties:
+        topic:
+          type: string
+        date_of_training:
+          type: string
+          format: date
+        trainer_name:
+          type: string
+        content_of_training:
+          type: string
+        venue:
+          type: string
+        participants:
+          type: string
+
+  TrainerBuyingAgent:
+      type: object
+      properties:
+        topic:
+          type: string
+        date_of_training:
+          type: string
+          format: date
+        trainer_name:
+          type: string
+        content_of_training:
+          type: string
+        venue:
+          type: string
+        participants:
+          type: string
+        

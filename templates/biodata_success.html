@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+    }
+
+    .success-container {
+      text-align: center;
+    }
+
+    .success-icon {
+      display: inline-block;
+      width: 8em;
+      height: 8em;
+      font-size: 20px;
+      border-radius: 50%;
+      border: 4px solid #c2e8bf;
+      background-color: #f0f0f0;
+      position: relative;
+      overflow: hidden;
+      transform-origin: center;
+      animation: showSuccess 180ms ease-in-out;
+      transform: scale(1);
+    }
+
+    .success-icon__tip,
+    .success-icon__long {
+      display: block;
+      position: absolute;
+      height: 4px;
+      border-radius: 10px;
+    }
+
+    .success-icon__tip {
+      width: 2.4em;
+      top: 4.3em;
+      left: 1.4em;
+      transform: rotate(45deg);
+      animation: tipInPlace 300ms ease-in-out;
+      animation-fill-mode: forwards;
+      animation-delay: 180ms;
+      visibility: hidden;
+      background-color: #c2e8bf; /* Using a light green color */
+    }
+
+    .success-icon__long {
+      width: 4em;
+      transform: rotate(-45deg);
+      top: 3.70em;
+      left: 2.75em;
+      animation: longInPlace 140ms ease-in-out;
+      animation-fill-mode: forwards;
+      visibility: hidden;
+      animation-delay: 300ms + 140ms;
+      background-color: #c2e8bf; /* Using a light green color */
+    }
+
+    @keyframes showSuccess {
+      from {
+        transform: scale(0);
+      }
+
+      to {
+        transform: scale(1);
+      }
+    }
+
+    @keyframes tipInPlace {
+      from {
+        width: 0em;
+        top: 0em;
+        left: -1.6em;
+      }
+
+      to {
+        width: 2.4em;
+        top: 4.3em;
+        left: 1.4em;
+        visibility: visible;
+      }
+    }
+
+    @keyframes longInPlace {
+      from {
+        width: 0em;
+        top: 5.1em;
+        left: 3.2em;
+      }
+
+      to {
+        width: 4em;
+        top: 3.70em;
+        left: 2.75em;
+        visibility: visible;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="success-container">
+    <div class="success-icon">
+      <div class="success-icon__tip"></div>
+      <div class="success-icon__long"></div>
+    </div>
+    <p>Biodata successfully verified</p>
+  </div>
+</body>
+
+</html>
