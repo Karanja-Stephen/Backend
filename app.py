@@ -4814,29 +4814,6 @@ def payment_validation():
     except KeyError as e:
         return jsonify({"ResultCode": 500, "ResultDesc": f"Failed due to missing key: {str(e)}"})
 
-@app.route('/offline-payment/validation', methods=['POST'])
-def payment_validation():
-    data = request.json
-    if not data:
-        return jsonify({"ResultCode": 1, "ResultDesc": "Failed, no data received"})
-
-    try:
-        # Extract relevant details from the validation payload
-        phone_number = '+' + str(data['MSISDN'])
-        transaction_id = data['TransID']
-        amount = data['TransAmount']
-        till_number = data['BusinessShortCode']
-
-        # Perform any necessary validation logic here
-        # For example, check if the transaction ID is valid in your database
-
-        # If valid, return success response
-        return jsonify({"ResultCode": 0, "ResultDesc": "Validation Successful"})
-    
-    except KeyError as e:
-        # Handle missing keys in the response
-        return jsonify({"ResultCode": 500, "ResultDesc": f"Failed due to missing key: {str(e)}"})
-
 @app.route('/offline-payment/confirmation', methods=['POST'])
 def payment_confirmation():
     data = request.json
