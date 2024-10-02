@@ -4813,10 +4813,11 @@ def payment_confirmation():
         # Send confirmation SMS
         send_confirmation_sms(phone_number, amount)
 
-        return jsonify({"ResultCode": 200, "ResultDesc": "Payment Confirmed Successfully"})
+        return jsonify({"ResultCode": 0, "ResultDesc": "Payment Confirmed Successfully"})
     except KeyError as e:
         # Handle missing keys in the response
-        return jsonify({"ResultCode": 500, "ResultDesc": f"Failed due to missing key: {str(e)}"})
+        return jsonify({"ResultCode": 1, "ResultDesc": f"Failed due to missing key: {str(e)}"})
+
 
 # Africa's Talking sms confirmation
 def send_confirmation_sms(phone_number, amount):
